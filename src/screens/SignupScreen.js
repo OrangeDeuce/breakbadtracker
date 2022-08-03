@@ -63,8 +63,11 @@ const styles = StyleSheet.create({
     marginBottom: 150,
   },
   errorMessage: {
-    fontSize: 16,
+    fontSize: 20,
     color: "red",
+    marginLeft: 10,
+    marginTop: 15,
+    marginBottom: 15,
   },
 });
 
