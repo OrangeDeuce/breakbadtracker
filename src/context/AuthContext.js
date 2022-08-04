@@ -9,6 +9,8 @@ const authReducer = (state, action) => {
       return { ...state, errorMessage: action.payload };
     case "signup":
       return { errorMessage: "", token: action.payload };
+    case "signin":
+      return { errorMessage: "", token: action.payload };
     default:
       return state;
   }
@@ -28,17 +30,28 @@ const signup = (dispatch) => {
       console.log(error.response.data);
       dispatch({
         type: "add_error",
-        payload: "Something went wrong with sign up...",
+        payload: "Something went wrong with Sign Up...",
       });
     }
   };
 };
 
 const signin = (dispatch) => {
-  return ({ email, password }) => {
+  return async ({ email, password }) => {
     // first to make api request to sign IN with that email and password
     // if goes thru n signs IN, to then modify our state and say that we are authenticated
     // and if signing IN fails, need to reflect and error msg somewher
+    try {
+      const response = await trackerApi.post("/signin", { email, password });
+      await AsyncStorage.setItem("token", response.data.token);
+      dispatch({ type: "signin", payload: response.data.token });
+      navigate("mainFlow");
+    } catch (error) {
+      dispatch({
+        type: "add_error",
+        payload: "Something went wrong with Sign In..",
+      });
+    }
   };
 };
 
