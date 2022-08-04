@@ -22,6 +22,16 @@ const clearErrorMessage = (dispatch) => () => {
   dispatch({ type: "clear_error_message" });
 };
 
+const tryLocalSignin = (dispatch) => async () => {
+  const token = await AsyncStorage.getItem("token");
+  if (token) {
+    dispatch({ type: "signin", payload: token });
+    navigate("mainFlow");
+  } else {
+    navigate("loginFlow");
+  }
+};
+
 const signup = (dispatch) => {
   return async ({ email, password }) => {
     // first to make api request to sign up with that email and password
@@ -71,6 +81,6 @@ const signout = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signout, signup, clearErrorMessage },
+  { signin, signout, signup, clearErrorMessage, tryLocalSignin },
   { token: null, errorMessage: "" }
 );
