@@ -29,8 +29,10 @@ const SignupScreen = ({ navigation }) => {
 //   };
 // };
 
-SignupScreen.navigationOptions = {
-  headerShown: false,
+SignupScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
 };
 
 const styles = StyleSheet.create({
