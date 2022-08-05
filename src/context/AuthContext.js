@@ -13,6 +13,8 @@ const authReducer = (state, action) => {
       return { errorMessage: "", token: action.payload };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
+    case "signout":
+      return { token: null, errorMessage: "" };
     default:
       return state;
   }
@@ -72,10 +74,13 @@ const signin = (dispatch) => {
 };
 
 const signout = (dispatch) => {
-  return ({ email, password }) => {
+  return async ({ email, password }) => {
     // first to make api request to sign OUT with that email and password
     // if goes thru n signs OUT, to then modify our state and say that we are authenticated
-    // and if signing OUT fails, need to reflect and error msg somewher
+    // and if signing OUT fails, need to reflect and error msg somewhere
+    await AsyncStorage.removeItem("token");
+    dispatch({ type: signout });
+    navigate("loginFlow");
   };
 };
 
